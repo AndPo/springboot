@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: ilnytskyi
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_dead
+                  type: bit(1)
+                  constraints:
+                    nullable: false

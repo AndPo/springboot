@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: ilnytskyi
+      changes:
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: dead
+                  type: boolean
