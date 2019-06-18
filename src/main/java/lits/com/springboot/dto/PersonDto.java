@@ -60,4 +60,12 @@ public class PersonDto{
     public void setDead(Boolean dead) {
         isDead = dead;
     }
+
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
 }

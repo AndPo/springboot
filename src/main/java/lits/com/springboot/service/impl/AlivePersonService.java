@@ -2,6 +2,7 @@ package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.model.Person;
+import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.service.PersonService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,9 @@ public class AlivePersonService implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -39,6 +43,17 @@ public class AlivePersonService implements PersonService {
     }
 
     @Override
+    public List<PersonDto> getAllPersonsByCity(Integer cityId) {
+        List<PersonDto> personDtos = new ArrayList<>();
+        List<Person> persons = personRepository.findByCityId(cityId);
+        for (Person person : persons) {
+            person = person.getDead() ? null : person;
+            personDtos.add(modelMapper.map(person, PersonDto.class));
+        }
+        return personDtos;
+    }
+
+    @Override
     public List<PersonDto> getAllPersonsByName(String name) {
         List<PersonDto> personDtos = new ArrayList<>();
         List<Person> persons = personRepository.findAllByNameContains(name);
@@ -53,7 +68,9 @@ public class AlivePersonService implements PersonService {
     public Person save(PersonDto personDto) {
         personDto.setDead(false);
         personDto = personDto.getDead() ? null : personDto;
-        return personRepository.save(modelMapper.map(personDto, Person.class));
+        Person person = modelMapper.map(personDto, Person.class);
+        person.setCity(cityRepository.findById(personDto.getCityId()));
+        return personRepository.save(person);
     }
 
     @Override

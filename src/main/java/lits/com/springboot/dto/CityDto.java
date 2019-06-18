@@ -2,7 +2,6 @@ package lits.com.springboot.dto;
 
 import lits.com.springboot.model.Person;
 
-import javax.persistence.*;
 import java.util.List;
 
 public class CityDto {

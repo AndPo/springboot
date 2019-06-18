@@ -11,6 +11,8 @@ public interface PersonService {
 
     List<PersonDto> getAllPersons();
 
+    List<PersonDto> getAllPersonsByCity(Integer cityId);
+
     public List<PersonDto> getAllPersonsByName(String name);
 
     Person save(PersonDto personDto);

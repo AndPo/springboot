@@ -27,6 +27,19 @@ public class DeadPersonService implements PersonService {
         return modelMapper.map(person, PersonDto.class);
     }
 
+
+    @Override
+    public List<PersonDto> getAllPersonsByCity(Integer cityId) {
+        List<PersonDto> personDtos = new ArrayList<>();
+        List<Person> persons = personRepository.findByCityId(cityId);
+        for (Person person : persons) {
+            person = person.getDead() ? person: null;
+            personDtos.add(modelMapper.map(person, PersonDto.class));
+        }
+        return personDtos;
+    }
+
+
     @Override
     public List<PersonDto> getAllPersons() {
         List<PersonDto> personDtos = new ArrayList<>();

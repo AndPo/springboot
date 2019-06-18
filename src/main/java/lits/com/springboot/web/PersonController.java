@@ -1,7 +1,9 @@
 package lits.com.springboot.web;
 
 import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.model.City;
 import lits.com.springboot.model.Person;
+import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.PersonService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class PersonController {
     @Autowired
     @Qualifier(value = "dead")
     private PersonService deadPersonService;
+
+    @Autowired
+    private CityRepository cityRepository;
 
 
     @GetMapping(value = "/persons", produces = "application/json;  charset=UTF-8")
@@ -47,6 +52,17 @@ public class PersonController {
     @GetMapping(value = "/persons/dead")
     public List<PersonDto> getDeadPersons(@RequestParam(value = "name", required = true) String name){
         return deadPersonService.getAllPersonsByName(name);
+    }
+
+    @GetMapping(value = "/persons/alivebycity")
+    public List<PersonDto> getAlivePersonsByCity(@RequestParam(value = "city", required = true) String cityName){
+        City city = cityRepository.findByName(cityName);
+        return alivePersonService.getAllPersonsByCity(city.getId());
+    }
+    @GetMapping(value = "/persons/deadbycity")
+    public List<PersonDto> getDeadPersonsByCity(@RequestParam(value = "city", required = true) String cityName){
+        City city = cityRepository.findByName(cityName);
+        return deadPersonService.getAllPersonsByCity(city.getId());
     }
 
     @GetMapping(value = "/persons")
