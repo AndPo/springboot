@@ -39,6 +39,17 @@ public class AlivePersonService implements PersonService {
     }
 
     @Override
+    public List<PersonDto> getAllPersonsByName(String name) {
+        List<PersonDto> personDtos = new ArrayList<>();
+        List<Person> persons = personRepository.findAllByNameContains(name);
+        for (Person person : persons) {
+            person = person.getDead() ? null : person;
+            personDtos.add(modelMapper.map(person, PersonDto.class));
+        }
+        return personDtos;
+    }
+
+    @Override
     public Person save(PersonDto personDto) {
         personDto.setDead(false);
         personDto = personDto.getDead() ? null : personDto;

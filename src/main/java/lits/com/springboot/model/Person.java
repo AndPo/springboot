@@ -20,6 +20,10 @@ public class Person {
 
     private Boolean isDead;
 
+    @ManyToOne
+    @JoinColumn(name="city_id")
+    private City city;
+
     public Integer getId() {
         return id;
     }
@@ -50,5 +54,13 @@ public class Person {
 
     public void setDead(Boolean dead) {
         isDead = dead;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

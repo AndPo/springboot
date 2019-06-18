@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 3
+      id: 10
       author: ilnytskyi
       changes:
         - createTable:
-            tableName: person
+            tableName: city
             columns:
               - column:
                   name: id
@@ -16,15 +16,5 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(32)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: age
-                  type: int(3)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: is_dead
-                  type: bit(1)
                   constraints:
                     nullable: false

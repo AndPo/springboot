@@ -16,31 +16,45 @@ public class PersonController {
 
     @Autowired
     @Qualifier(value = "alive")
-    private PersonService personService;
+    private PersonService alivePersonService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    @Qualifier(value = "dead")
+    private PersonService deadPersonService;
 
-    @GetMapping(value = "users", produces = "application/json;  charset=UTF-8")
-    public List<PersonDto> getPersonById(){
-        List<PersonDto> personDtos = personService.getAllPersons();
+
+    @GetMapping(value = "/persons", produces = "application/json;  charset=UTF-8")
+    public List<PersonDto> geAllPersons(){
+        List<PersonDto> personDtos = alivePersonService.getAllPersons();
         return personDtos;
     }
 
-    @PostMapping
+    @PostMapping(value = "/person/save")
     public Person savePerson(@RequestBody PersonDto personDto){
-        return personService.save(personDto);
+        return alivePersonService.save(personDto);
     }
 
-    @GetMapping(value = "/user")
+    @GetMapping(value = "/person")
     public PersonDto getPersonById(@RequestParam Integer id) {
-        return modelMapper.map(personService.getById(id), PersonDto.class);
+        return alivePersonService.getById(id);
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "/persons/alive")
+    public List<PersonDto> getAlivePersons(@RequestParam(value = "name", required = true) String name){
+        return alivePersonService.getAllPersonsByName(name);
+    }
+
+    @GetMapping(value = "/persons/dead")
+    public List<PersonDto> getDeadPersons(@RequestParam(value = "name", required = true) String name){
+        return deadPersonService.getAllPersonsByName(name);
+    }
+
+    @GetMapping(value = "/persons")
     public List<PersonDto> getPersonByNameAndByAge(@RequestParam(value = "name", required = true) String name,
                                                 @RequestParam(value = "age", required = true) Integer age)
     {
-        return personService.findByNameAndAge(name, age);
+        return alivePersonService.findByNameAndAge(name, age);
     }
+
+
 }

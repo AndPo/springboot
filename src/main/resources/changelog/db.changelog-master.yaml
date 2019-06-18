@@ -1,5 +1,7 @@
 databaseChangeLog:
   - include:
-      file: changelog/changeset/create-table.yaml
+      file: changelog/changeset/create_table_city.yaml
+  - include:
+      file: changelog/changeset/create_table_person.yaml
   - include:
       file: changelog/changeset/add_column.yaml
