@@ -15,8 +15,9 @@ public interface PersonService {
 
     public List<PersonDto> getAllPersonsByName(String name);
 
-    Person save(PersonDto personDto);
+    PersonDto save(PersonDto personDto);
 
     List<PersonDto> findByNameAndAge(String name, Integer age);
 
+    PersonDto update(PersonDto personDto);
 }

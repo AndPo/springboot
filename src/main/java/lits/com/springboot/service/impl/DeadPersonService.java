@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("dead")
+@Service("deadPersonService")
 public class DeadPersonService implements PersonService {
 
     @Autowired
@@ -63,8 +63,8 @@ public class DeadPersonService implements PersonService {
     }
 
     @Override
-    public Person save(PersonDto personDto) {
-        return personRepository.save(modelMapper.map(personDto, Person.class));
+    public PersonDto save(PersonDto personDto) {
+        return modelMapper.map(personRepository.save(modelMapper.map(personDto, Person.class)), PersonDto.class);
     }
 
     @Override
@@ -76,6 +76,11 @@ public class DeadPersonService implements PersonService {
             personDtos.add(modelMapper.map(person, PersonDto.class));
         }
         return personDtos;
+    }
+
+    @Override
+    public PersonDto update(PersonDto personDto) {
+        return null;
     }
 }
 

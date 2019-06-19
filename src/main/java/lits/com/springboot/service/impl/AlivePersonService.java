@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("alive")
+@Service("alivePersonService")
 public class AlivePersonService implements PersonService {
 
     @Autowired
@@ -65,12 +65,12 @@ public class AlivePersonService implements PersonService {
     }
 
     @Override
-    public Person save(PersonDto personDto) {
+    public PersonDto save(PersonDto personDto) {
         personDto.setDead(false);
         personDto = personDto.getDead() ? null : personDto;
         Person person = modelMapper.map(personDto, Person.class);
         person.setCity(cityRepository.findById(personDto.getCityId()));
-        return personRepository.save(person);
+        return modelMapper.map(personRepository.save(person), PersonDto.class);
     }
 
     @Override
@@ -82,5 +82,11 @@ public class AlivePersonService implements PersonService {
             personDtos.add(modelMapper.map(person, PersonDto.class));
         }
         return personDtos;
+    }
+
+    @Override
+    public PersonDto update(PersonDto personDto) {
+        Person person = modelMapper.map(personDto, Person.class);
+        return modelMapper.map(personRepository.save(person), PersonDto.class);
     }
 }

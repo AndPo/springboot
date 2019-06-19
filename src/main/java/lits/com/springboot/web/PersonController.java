@@ -2,75 +2,65 @@ package lits.com.springboot.web;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.model.City;
-import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.PersonService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value ="/api")
+@RequestMapping(value ="/api/persons")
 public class PersonController {
 
     @Autowired
-    @Qualifier(value = "alive")
-    private PersonService alivePersonService;
-
-    @Autowired
-    @Qualifier(value = "dead")
-    private PersonService deadPersonService;
+    private Map<String, PersonService> personServicesMap;
 
     @Autowired
     private CityRepository cityRepository;
 
-
-    @GetMapping(value = "/persons", produces = "application/json;  charset=UTF-8")
-    public List<PersonDto> geAllPersons(){
-        List<PersonDto> personDtos = alivePersonService.getAllPersons();
-        return personDtos;
+    private PersonService qualifiedPersonService(Boolean isAlive){
+        PersonService personService;
+        if (isAlive == null){
+            personService = personServicesMap.get("personService");
+        }else{
+            personService = isAlive ? personServicesMap.get("alivePersonService") : personServicesMap.get("deadPersonService");
+        }
+        return personService;
     }
 
-    @PostMapping(value = "/person/save")
-    public Person savePerson(@RequestBody PersonDto personDto){
-        return alivePersonService.save(personDto);
+    @GetMapping(value = "")
+    public List<PersonDto> geAllPersons(@RequestParam(value = "isalive", required = false) Boolean isAlive){
+        return qualifiedPersonService(isAlive).getAllPersons();
     }
 
-    @GetMapping(value = "/person")
-    public PersonDto getPersonById(@RequestParam Integer id) {
-        return alivePersonService.getById(id);
+    @GetMapping(value = "/{id}")
+    public PersonDto getPersonById(@PathVariable("id")Integer id) {
+        return qualifiedPersonService(null).getById(id);
     }
 
-    @GetMapping(value = "/persons/alive")
-    public List<PersonDto> getAlivePersons(@RequestParam(value = "name", required = true) String name){
-        return alivePersonService.getAllPersonsByName(name);
+    @PostMapping(value = "")
+    public PersonDto savePerson(@RequestBody PersonDto personDto){
+        return qualifiedPersonService(null).save(personDto);
     }
 
-    @GetMapping(value = "/persons/dead")
-    public List<PersonDto> getDeadPersons(@RequestParam(value = "name", required = true) String name){
-        return deadPersonService.getAllPersonsByName(name);
+    @PutMapping(value = "")
+    public PersonDto updatePerson(@RequestBody PersonDto personDto){
+        return qualifiedPersonService(null).update(personDto);
     }
 
-    @GetMapping(value = "/persons/alivebycity")
-    public List<PersonDto> getAlivePersonsByCity(@RequestParam(value = "city", required = true) String cityName){
-        City city = cityRepository.findByName(cityName);
-        return alivePersonService.getAllPersonsByCity(city.getId());
-    }
-    @GetMapping(value = "/persons/deadbycity")
-    public List<PersonDto> getDeadPersonsByCity(@RequestParam(value = "city", required = true) String cityName){
-        City city = cityRepository.findByName(cityName);
-        return deadPersonService.getAllPersonsByCity(city.getId());
+    @GetMapping(value = "", params = "name")
+    public List<PersonDto> getAllPersonsByName(@RequestParam(value = "name", required = true, defaultValue = "") String name,
+                                               @RequestParam(value = "age", required = false) Integer age,
+                                               @RequestParam(value = "isalive", required = false) Boolean isAlive){
+        return qualifiedPersonService(isAlive).getAllPersonsByName(name);
     }
 
-    @GetMapping(value = "/persons")
-    public List<PersonDto> getPersonByNameAndByAge(@RequestParam(value = "name", required = true) String name,
-                                                @RequestParam(value = "age", required = true) Integer age)
-    {
-        return alivePersonService.findByNameAndAge(name, age);
+    @GetMapping(value = "/city/{city_id}")
+    public List<PersonDto> getAlivePersonsByCity(@PathVariable("city_id") Integer cityId,
+                                                 @RequestParam(value = "isalive", required = false) Boolean isAlive){
+        return qualifiedPersonService(isAlive).getAllPersonsByCity(cityId);
     }
-
-
 }
