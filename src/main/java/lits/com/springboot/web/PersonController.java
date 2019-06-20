@@ -4,6 +4,7 @@ import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,16 +41,19 @@ public class PersonController {
     }
 
     @PostMapping(value = "")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGE')")
     public PersonDto savePerson(@RequestBody PersonDto personDto){
         return qualifiedPersonService(null).save(personDto);
     }
 
     @PutMapping(value = "")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public PersonDto updatePerson(@RequestBody PersonDto personDto){
         return qualifiedPersonService(null).update(personDto);
     }
 
     @GetMapping(value = "", params = "name")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGE') or hasRole('ROLE_USER')")
     public List<PersonDto> getAllPersonsByName(@RequestParam(value = "name", required = true, defaultValue = "") String name,
                                                @RequestParam(value = "age", required = false) Integer age,
                                                @RequestParam(value = "isalive", required = false) Boolean isAlive){
@@ -57,6 +61,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/city/{city_id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGE') or hasRole('ROLE_USER')")
     public List<PersonDto> getAlivePersonsByCity(@PathVariable("city_id") Integer cityId,
                                                  @RequestParam(value = "isalive", required = false) Boolean isAlive){
         return qualifiedPersonService(isAlive).getAllPersonsByCity(cityId);
