@@ -69,7 +69,7 @@ public class AlivePersonService implements PersonService {
         personDto.setDead(false);
         personDto = personDto.getDead() ? null : personDto;
         Person person = modelMapper.map(personDto, Person.class);
-        person.setCity(cityRepository.findById(personDto.getCityId()));
+       /// person.setCity(cityRepository.findById(personDto.getCityId()).getId());
         return modelMapper.map(personRepository.save(person), PersonDto.class);
     }
 

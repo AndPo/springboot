@@ -40,7 +40,7 @@ public class Application implements ApplicationRunner {
 		Role role = new Role();
 		role.setName("ADMIN");
 		role.setDescription("Some admin role");
-		role.setUser(user);
+		role.setUserId(user.getId());
 		roleRepository.save(role);
 		List<Role> roles= new ArrayList<Role>();
 		roles.add(role);

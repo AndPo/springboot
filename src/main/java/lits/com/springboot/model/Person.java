@@ -22,7 +22,7 @@ public class Person {
 
     @ManyToOne
     @JoinColumn(name="city_id")
-    private City city;
+    private long city;
 
     public Integer getId() {
         return id;
@@ -56,11 +56,11 @@ public class Person {
         isDead = dead;
     }
 
-    public City getCity() {
+    public long getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(long city) {
         this.city = city;
     }
 }
