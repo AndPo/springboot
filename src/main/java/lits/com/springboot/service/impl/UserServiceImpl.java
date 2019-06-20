@@ -1,6 +1,5 @@
 package lits.com.springboot.service.impl;
 
-import lits.com.springboot.model.Role;
 import lits.com.springboot.model.User;
 import lits.com.springboot.repository.UserRepository;
 import lits.com.springboot.service.UserService;
@@ -12,7 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserService, UserDetailsService {

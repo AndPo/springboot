@@ -3,6 +3,7 @@ package lits.com.springboot.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "USER_ROLES")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +14,10 @@ public class Role {
 
     @Column
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private long userId;
 
     public int getId() {
         return id;
@@ -36,5 +41,13 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
