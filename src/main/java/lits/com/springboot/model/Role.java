@@ -17,7 +17,7 @@ public class Role {
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User user;
+    private Long userId;
 
     public long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Role {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
