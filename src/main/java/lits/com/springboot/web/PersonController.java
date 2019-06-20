@@ -1,13 +1,11 @@
 package lits.com.springboot.web;
 
 import lits.com.springboot.dto.PersonDto;
-import lits.com.springboot.model.City;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 

@@ -1,7 +1,5 @@
 package lits.com.springboot.config;
 
-import lits.com.springboot.dto.PersonDto;
-import lits.com.springboot.model.Person;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

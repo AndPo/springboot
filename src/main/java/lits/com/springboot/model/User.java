@@ -1,14 +1,16 @@
 package lits.com.springboot.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private long id;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -16,11 +18,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    public Integer getId() {
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_ROLES", joinColumns = {
+            @JoinColumn(name="USER_ID")}, inverseJoinColumns = {
+            @JoinColumn(name="ROLE_ID")})
+    private Set<Role> roles;
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -38,5 +46,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
