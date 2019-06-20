@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 9
+      id: 10
       author: ilnytskyi
       changes:
         - createTable:
-            tableName: roles
+            tableName: role
             columns:
               - column:
                   name: id
@@ -28,5 +28,5 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_roles_user
+                    foreignKeyName: fk_role_user
                     references: user(id)
