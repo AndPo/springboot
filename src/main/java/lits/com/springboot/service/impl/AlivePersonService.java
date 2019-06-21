@@ -66,10 +66,8 @@ public class AlivePersonService implements PersonService {
 
     @Override
     public PersonDto save(PersonDto personDto) {
-        personDto.setDead(false);
         personDto = personDto.getDead() ? null : personDto;
         Person person = modelMapper.map(personDto, Person.class);
-       /// person.setCity(cityRepository.findById(personDto.getCityId()).getId());
         return modelMapper.map(personRepository.save(person), PersonDto.class);
     }
 

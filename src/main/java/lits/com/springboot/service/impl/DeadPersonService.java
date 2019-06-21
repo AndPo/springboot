@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service("deadPersonService")
 public class DeadPersonService implements PersonService {
-
+    //TODO reailze all PersonServices
     @Autowired
     private PersonRepository personRepository;
 

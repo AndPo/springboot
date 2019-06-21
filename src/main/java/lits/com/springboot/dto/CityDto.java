@@ -1,16 +1,10 @@
 package lits.com.springboot.dto;
 
-import lits.com.springboot.model.Person;
-
-import java.util.List;
-
 public class CityDto {
 
     private Integer id;
 
     private String name;
-
-    private List<Person> persons;
 
     public CityDto() {
     }
@@ -35,11 +29,4 @@ public class CityDto {
         this.name = name;
     }
 
-    public List<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
-    }
 }

@@ -1,10 +1,6 @@
 package lits.com.springboot.model;
 
 import javax.persistence.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 @Entity
 @Table
@@ -18,6 +14,7 @@ public class Person {
 
     private Integer age;
 
+    //TODO find problem with save isDead field to database
     private Boolean isDead;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
