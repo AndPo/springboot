@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PersonService {
 
-    PersonDto getById(Integer id);
+    PersonDto getById(Long id);
 
     List<PersonDto> getAllPersons();
 
-    List<PersonDto> getAllPersonsByCity(Integer cityId);
+    List<PersonDto> getAllPersonsByCity(Long cityId);
 
     public List<PersonDto> getAllPersonsByName(String name);
 

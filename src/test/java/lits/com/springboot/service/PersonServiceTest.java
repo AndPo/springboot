@@ -50,9 +50,9 @@ public class PersonServiceTest {
     public void shouldGetPerson(){
         Person person = new Person();
         person.setDead(false);
-        when(personRepository.findOne(1)).thenReturn(person);
-        personService.getById(1);
-        verify(personRepository, times(1)).findOne(1);
+        when(personRepository.findOne( 1l)).thenReturn(person);
+        personService.getById(1l);
+        verify(personRepository, times(1)).findOne(1l);
     }
 
 

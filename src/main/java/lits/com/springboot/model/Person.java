@@ -12,7 +12,7 @@ public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -20,15 +20,15 @@ public class Person {
 
     private Boolean isDead;
 
-    @ManyToOne
-    @JoinColumn(name="city_id")
-    private long city;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,11 +56,11 @@ public class Person {
         isDead = dead;
     }
 
-    public long getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(long city) {
+    public void setCity(City city) {
         this.city = city;
     }
 }

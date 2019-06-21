@@ -47,6 +47,6 @@ public class Application implements ApplicationRunner {
 				.setRoles(new HashSet<Role>(){{add(role);}});
 
 //		roleRepository.save(role);
-		userRepository.save(user);
+//		userRepository.save(user);
 	}
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 @Service(value = "personService")
 public class PersonServiceImpl implements PersonService {
+
     @Override
-    public PersonDto getById(Integer id) {
+    public PersonDto getById(Long id) {
         return null;
     }
 
@@ -19,7 +20,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonDto> getAllPersonsByCity(Integer cityId) {
+    public List<PersonDto> getAllPersonsByCity(Long cityId) {
         return null;
     }
 

@@ -25,7 +25,7 @@ public class AlivePersonService implements PersonService {
     private ModelMapper modelMapper;
 
     @Override
-    public PersonDto getById(Integer id) {
+    public PersonDto getById(Long id) {
         Person person = personRepository.findOne(id);
         person = person.getDead() ? null : person;
         return modelMapper.map(person, PersonDto.class);
@@ -43,7 +43,7 @@ public class AlivePersonService implements PersonService {
     }
 
     @Override
-    public List<PersonDto> getAllPersonsByCity(Integer cityId) {
+    public List<PersonDto> getAllPersonsByCity(Long cityId) {
         List<PersonDto> personDtos = new ArrayList<>();
         List<Person> persons = personRepository.findByCityId(cityId);
         for (Person person : persons) {

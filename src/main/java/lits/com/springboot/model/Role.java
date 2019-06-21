@@ -3,11 +3,12 @@ package lits.com.springboot.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     private String name;
@@ -15,11 +16,11 @@ public class Role {
     @Column
     private String description;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public Role setId(long id) {
+    public Role setId(Long id) {
         this.id = id;
         return this;
     }

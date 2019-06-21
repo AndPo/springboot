@@ -36,7 +36,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/{id}")
-    public PersonDto getPersonById(@PathVariable("id")Integer id) {
+    public PersonDto getPersonById(@PathVariable("id")Long id) {
         return qualifiedPersonService(null).getById(id);
     }
 
@@ -62,7 +62,7 @@ public class PersonController {
 
     @GetMapping(value = "/city/{city_id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGE') or hasRole('ROLE_USER')")
-    public List<PersonDto> getAlivePersonsByCity(@PathVariable("city_id") Integer cityId,
+    public List<PersonDto> getAlivePersonsByCity(@PathVariable("city_id") Long cityId,
                                                  @RequestParam(value = "isalive", required = false) Boolean isAlive){
         return qualifiedPersonService(isAlive).getAllPersonsByCity(cityId);
     }
