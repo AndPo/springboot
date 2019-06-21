@@ -1,15 +1,13 @@
 package lits.com.springboot.security;
 
 import lits.com.springboot.service.TokenService;
-import lits.com.springboot.service.UserService;
 import lits.com.springboot.service.impl.UserServiceImpl;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,7 +20,7 @@ import java.util.Optional;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
     private static final String BEARER_TYPE = "Bearer";
 
@@ -34,8 +32,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        Long accountId =  Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION)).filter(this::containsBearerToken)
-                .map(token -> token.substring(BEARER_TYPE.length() + 1)).map(token -> tokenService.parseToken(token)).orElse(null);
+        Long accountId =  Optional
+                .ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+                .filter(this::containsBearerToken)
+                .map(token -> token.substring(BEARER_TYPE.length() + 1))
+                .map(token -> tokenService.parseToken(token)).orElse(null);
 
         logger.info("checking authentication for user " + accountId);
 

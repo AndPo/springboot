@@ -22,11 +22,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRepository.findOneByEmail(s);
+
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -36,9 +35,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public List<GrantedAuthority> getAuthority(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
+
         user.getRoles().forEach(role ->{
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         });
+
         return authorities;
     }
 

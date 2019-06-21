@@ -53,10 +53,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-		</dependency>
+		</dependency>-->
+<!--TODO Repair liqubase yaml files-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
