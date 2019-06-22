@@ -13,7 +13,7 @@ public class City {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = CascadeType.ALL)
     private List<Person> persons;
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.model.City;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
@@ -68,6 +69,8 @@ public class AlivePersonService implements PersonService {
     public PersonDto save(PersonDto personDto) {
         personDto = personDto.getDead() ? null : personDto;
         Person person = modelMapper.map(personDto, Person.class);
+//        City city = person.getCity();
+//        cityRepository.findByName(city.getName()) != null ?  :
         return modelMapper.map(personRepository.save(person), PersonDto.class);
     }
 
