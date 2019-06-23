@@ -26,7 +26,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDto save(CityDto cityDto) {
-        City city = cityRepository.save(modelMapper.map(cityDto, City.class))
+        City city = cityRepository.save(modelMapper.map(cityDto, City.class));
         return modelMapper.map(city, CityDto.class);
     }
 
@@ -34,12 +34,14 @@ public class CityServiceImpl implements CityService {
     public CityDto update(CityDto cityDto) {
         City city = cityRepository.findByName(cityDto.getName());
         //TODO complete this method if in City Entity
+        //change fields our Entity
+        //cityRepository.save(city);
         return modelMapper.map(city, CityDto.class);
     }
 
     @Override
     public void delete(Long id) {
-
+        cityRepository.delete(id);
     }
 
     @Override

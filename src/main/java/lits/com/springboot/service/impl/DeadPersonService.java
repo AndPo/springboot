@@ -2,85 +2,90 @@ package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.model.Person;
+import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.service.PersonService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("deadPersonService")
 public class DeadPersonService implements PersonService {
-    //TODO reailze all PersonServices
+
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public PersonDto getById(Long id) {
-        Person person = personRepository.findOne(id);
-        person = person.getDead() ? person : null;
-        return modelMapper.map(person, PersonDto.class);
+        return Optional.ofNullable(personRepository.findOne(id))
+                .filter(Person::getDead)
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
-
-
-    @Override
-    public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findByCityId(cityId);
-        for (Person person : persons) {
-            person = person.getDead() ? person: null;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
-    }
-
 
     @Override
     public List<PersonDto> getAllPersons() {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findAll();
-        for (Person person: persons) {
-            person = person.getDead() ? person : null;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findAll().stream()
+                .filter(Person::getDead)
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PersonDto> getAllPersonsByCity(Long cityId) {
+        return personRepository.findByCityId(cityId).stream()
+                .filter(Person::getDead)
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findAllByNameContains(name);
-        for (Person person : persons) {
-            person = person.getDead() ? person : null;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findAllByNameContains(name).stream()
+                .filter(Person::getDead)
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public PersonDto save(PersonDto personDto) {
-        return modelMapper.map(personRepository.save(modelMapper.map(personDto, Person.class)), PersonDto.class);
+//        City city = person.getCity();
+//        cityRepository.findByName(city.getName()) != null ?  :
+        return Optional.ofNullable(personDto)
+                .filter(PersonDto::getDead)
+                .map(e -> modelMapper.map(e, Person.class))
+                .map(e -> personRepository.save(e))
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
 
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findByNameAndAge(name, age);
-        for (Person person: persons) {
-            person = person.getDead() ? person : null;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findByNameAndAge(name, age).stream()
+                .filter(Person::getDead)
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        return null;
+        Person person = modelMapper.map(personDto, Person.class);
+        return Optional.ofNullable(personDto)
+                .filter(PersonDto::getDead)
+                .map(e -> modelMapper.map(e, Person.class))
+                .map(e -> personRepository.save(e))
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
 }
 

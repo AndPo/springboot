@@ -25,39 +25,44 @@ public class Person {
         return id;
     }
 
-    public void setId(Long id) {
+    public Person setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Person setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Integer getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public Person setAge(Integer age) {
         this.age = age;
+        return this;
     }
 
     public Boolean getDead() {
         return isDead;
     }
 
-    public void setDead(Boolean dead) {
+    public Person setDead(Boolean dead) {
         isDead = dead;
+        return this;
     }
 
     public City getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public Person setCity(City city) {
         this.city = city;
+        return this;
     }
 }

@@ -20,23 +20,26 @@ public class City {
         return id;
     }
 
-    public void setId(Long id) {
+    public City setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public City setName(String name) {
         this.name = name;
+        return this;
     }
 
     public List<Person> getPersons() {
         return persons;
     }
 
-    public void setPersons(List<Person> persons) {
+    public City setPersons(List<Person> persons) {
         this.persons = persons;
+        return this;
     }
 }

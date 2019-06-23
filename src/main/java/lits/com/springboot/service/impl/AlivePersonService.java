@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("alivePersonService")
 public class AlivePersonService implements PersonService {
@@ -27,67 +29,64 @@ public class AlivePersonService implements PersonService {
 
     @Override
     public PersonDto getById(Long id) {
-        Person person = personRepository.findOne(id);
-        person = person.getDead() ? null : person;
-        return modelMapper.map(person, PersonDto.class);
+        return Optional.ofNullable(personRepository.findOne(id))
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
 
     @Override
     public List<PersonDto> getAllPersons() {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findAll();
-        for (Person person : persons) {
-            person = person.getDead() ? null : person;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findAll().stream()
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findByCityId(cityId);
-        for (Person person : persons) {
-            person = person.getDead() ? null : person;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findByCityId(cityId).stream()
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findAllByNameContains(name);
-        for (Person person : persons) {
-            person = person.getDead() ? null : person;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findAllByNameContains(name).stream()
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public PersonDto save(PersonDto personDto) {
-        personDto = personDto.getDead() ? null : personDto;
-        Person person = modelMapper.map(personDto, Person.class);
 //        City city = person.getCity();
 //        cityRepository.findByName(city.getName()) != null ?  :
-        return modelMapper.map(personRepository.save(person), PersonDto.class);
+        return Optional.ofNullable(personDto)
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, Person.class))
+                .map(e -> personRepository.save(e))
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
 
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
-        List<PersonDto> personDtos = new ArrayList<>();
-        List<Person> persons = personRepository.findByNameAndAge(name, age);
-        for (Person person : persons) {
-            person = person.getDead() ? null : person;
-            personDtos.add(modelMapper.map(person, PersonDto.class));
-        }
-        return personDtos;
+        return personRepository.findByNameAndAge(name, age).stream()
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public PersonDto update(PersonDto personDto) {
         Person person = modelMapper.map(personDto, Person.class);
-        return modelMapper.map(personRepository.save(person), PersonDto.class);
+        return Optional.ofNullable(personDto)
+                .filter(e -> !e.getDead())
+                .map(e -> modelMapper.map(e, Person.class))
+                .map(e -> personRepository.save(e))
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .orElse(new PersonDto());
     }
 }
