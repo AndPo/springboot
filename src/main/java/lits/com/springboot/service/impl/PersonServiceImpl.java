@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @Service(value = "personService")
 public class PersonServiceImpl implements PersonService {
 
+    //TODO ask teachers about using Optional and NotNullable in streams
+
     @Autowired
     private PersonRepository personRepository;
 
@@ -73,7 +75,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        Person person = modelMapper.map(personDto, Person.class);
         return Optional.ofNullable(personDto)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))

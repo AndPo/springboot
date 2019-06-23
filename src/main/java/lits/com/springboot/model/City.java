@@ -13,6 +13,8 @@ public class City {
 
     private String name;
 
+    private String description;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = CascadeType.ALL)
     private List<Person> persons;
 
@@ -31,6 +33,15 @@ public class City {
 
     public City setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public City setDescription(String description) {
+        this.description = description;
         return this;
     }
 

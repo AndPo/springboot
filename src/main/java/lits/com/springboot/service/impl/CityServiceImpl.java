@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service(value = "cityService")
 public class CityServiceImpl implements CityService {
 
@@ -20,23 +22,28 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDto findOne(Long id) {
-        City city= cityRepository.findOne(id);
-        return modelMapper.map(city, CityDto.class);
+        return Optional.ofNullable(cityRepository.findOne(id))
+                .map(e -> modelMapper.map(e, CityDto.class))
+                .orElse(new CityDto());
     }
 
     @Override
     public CityDto save(CityDto cityDto) {
-        City city = cityRepository.save(modelMapper.map(cityDto, City.class));
-        return modelMapper.map(city, CityDto.class);
+        return Optional.ofNullable(cityDto)
+                .map(e -> modelMapper.map(e, City.class))
+                .map(e -> cityRepository.save(e))
+                .map(e -> modelMapper.map(e, CityDto.class))
+                .orElse(new CityDto());
     }
 
     @Override
     public CityDto update(CityDto cityDto) {
-        City city = cityRepository.findByName(cityDto.getName());
-        //TODO complete this method if in City Entity
-        //change fields our Entity
-        //cityRepository.save(city);
-        return modelMapper.map(city, CityDto.class);
+        // Name can't repeat in other
+        return Optional.ofNullable(cityRepository.findByName(cityDto.getName()))
+                .map(e -> e.setDescription(cityDto.getDescription()))
+                .map(e -> cityRepository.save(e))
+                .map(e -> modelMapper.map(e, CityDto.class))
+                .orElse(new CityDto());
     }
 
     @Override
@@ -46,6 +53,8 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDto findByName(String name) {
-        return null;
+        return Optional.ofNullable(cityRepository.findByName(name))
+                .map(e -> modelMapper.map(e, CityDto.class))
+                .orElse(new CityDto());
     }
 }

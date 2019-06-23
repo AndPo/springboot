@@ -6,11 +6,13 @@ public class CityDto {
 
     private String name;
 
-    public CityDto() {
-    }
+    private String description;
 
     public CityDto(String name) {
         this.name = name;
+    }
+
+    public CityDto() {
     }
 
     public Integer getId() {
@@ -29,4 +31,12 @@ public class CityDto {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public CityDto setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 }

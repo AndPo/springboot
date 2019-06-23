@@ -81,7 +81,6 @@ public class AlivePersonService implements PersonService {
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        Person person = modelMapper.map(personDto, Person.class);
         return Optional.ofNullable(personDto)
                 .filter(e -> !e.getDead())
                 .map(e -> modelMapper.map(e, Person.class))

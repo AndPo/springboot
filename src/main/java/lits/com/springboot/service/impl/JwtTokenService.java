@@ -33,7 +33,6 @@ public class JwtTokenService implements TokenService {
         try {
             Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
             final Claims body = claimsJws.getBody();
-
             return body.get(userIdClaim, Long.class);
         } catch (ExpiredJwtException e) {
             logger.debug("JWT token has expired: {}", e.getMessage());

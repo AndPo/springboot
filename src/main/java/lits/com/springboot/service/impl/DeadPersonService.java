@@ -79,7 +79,6 @@ public class DeadPersonService implements PersonService {
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        Person person = modelMapper.map(personDto, Person.class);
         return Optional.ofNullable(personDto)
                 .filter(PersonDto::getDead)
                 .map(e -> modelMapper.map(e, Person.class))
