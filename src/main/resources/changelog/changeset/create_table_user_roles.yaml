@@ -1,23 +1,20 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
+      id: 6
       author: Ilnytskyi
       changes:
         - createTable:
-            tableName: city
+            tableName: user_roles
             columns:
               - column:
-                  name: id
+                  name: user_id
                   type: bigint
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(32)
+                  name: role_id
+                  type: bigint
                   constraints:
+                    primaryKey: true
                     nullable: false
-              - column:
-                  name: description
-                  type: varchar(255)

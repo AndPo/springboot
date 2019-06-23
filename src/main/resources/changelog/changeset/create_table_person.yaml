@@ -1,14 +1,14 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
-      author: ilnytskyi
+      id: 2
+      author: Ilnytskyi
       changes:
         - createTable:
             tableName: person
             columns:
               - column:
                   name: id
-                  type: int
+                  type: bigint
                   autoIncrement: true
                   constraints:
                     primaryKey: true
@@ -30,8 +30,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: city_id
-                  type: int
+                  type: bigint
                   constraints:
-                    nullable: false
                     foreignKeyName: fk_city_person
                     references: city(id)

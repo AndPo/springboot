@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 10
-      author: ilnytskyi
+      id: 3
+      author: Ilnytskyi
       changes:
         - createTable:
-            tableName: role
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -23,10 +23,34 @@ databaseChangeLog:
                   type: varchar(128)
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 4
+      author: Ilnytskyi
+      changes:
+        - insert:
+            tableName: roles
+            columns:
               - column:
-                  name: user_id
-                  type: bigint
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_role_user
-                    references: user(id)
+                  name: name
+                  value: "ADMIN"
+              - column:
+                  name: description
+                  value: "Admin role"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "USER"
+              - column:
+                  name: description
+                  value: "User role"
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: "MANAGER"
+              - column:
+                  name: description
+                  value: "Manager role"

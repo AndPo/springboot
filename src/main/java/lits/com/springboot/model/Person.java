@@ -17,7 +17,7 @@ public class Person {
     //TODO find problem with save isDead field to database
     private Boolean isDead;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 

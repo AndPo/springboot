@@ -4,8 +4,8 @@ databaseChangeLog:
   - include:
       file: changelog/changeset/create_table_person.yaml
   - include:
-      file: changelog/changeset/create_table_user.yaml
-  - include:
       file: changelog/changeset/create_table_roles.yaml
   - include:
-      file: changelog/changeset/add_column.yaml
+      file: changelog/changeset/create_table_user.yaml
+  - include:
+      file: changelog/changeset/create_table_user_roles.yaml
