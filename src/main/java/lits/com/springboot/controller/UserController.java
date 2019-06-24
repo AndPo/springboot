@@ -1,4 +1,4 @@
-package lits.com.springboot.web;
+package lits.com.springboot.controller;
 
 import lits.com.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

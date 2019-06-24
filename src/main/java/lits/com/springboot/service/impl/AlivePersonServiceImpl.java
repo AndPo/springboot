@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("alivePersonService")
-public class AlivePersonService implements PersonService {
+public class AlivePersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
@@ -43,7 +43,7 @@ public class AlivePersonService implements PersonService {
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        return personRepository.findByCityId(cityId).stream()
+        return personRepository.findAllByCityId(cityId).stream()
                 .filter(e -> !e.getDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());

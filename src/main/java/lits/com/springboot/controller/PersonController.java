@@ -1,4 +1,4 @@
-package lits.com.springboot.web;
+package lits.com.springboot.controller;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.repository.CityRepository;
