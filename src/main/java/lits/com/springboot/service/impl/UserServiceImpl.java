@@ -19,6 +19,7 @@ import java.util.Objects;
 @Service(value = "userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    //TODO implement UserDto to service
     @Autowired
     private UserRepository userRepository;
 

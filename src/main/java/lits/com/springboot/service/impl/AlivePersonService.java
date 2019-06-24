@@ -1,7 +1,6 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
-import lits.com.springboot.model.City;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
@@ -10,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

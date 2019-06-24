@@ -30,6 +30,7 @@ public class PersonController {
         return personService;
     }
 
+    //TODO change methods. Methods must be sensitive to isDead field
     @GetMapping(value = "")
     public List<PersonDto> geAllPersons(@RequestParam(value = "isalive", required = false) Boolean isAlive){
         return qualifiedPersonService(isAlive).getAllPersons();

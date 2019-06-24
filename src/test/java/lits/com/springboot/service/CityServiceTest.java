@@ -51,16 +51,35 @@ public class CityServiceTest {
 
     @Test
     public void shouldUpdateCity() {
+        CityDto cityDto = new CityDto();
+        City city = new City();
 
+        when(modelMapper.map(cityDto, City.class)).thenReturn(city);
+        when(modelMapper.map(city, CityDto.class)).thenReturn(cityDto);
+        when(cityRepository.save(city)).thenReturn(city);
+
+        assertEquals(cityDto, cityService.save(cityDto));
+        verify(cityRepository).save(city);
     }
 
     @Test
     public void shouldDeleteCity() {
-
+        cityService.delete(1l);
+        verify(cityRepository).delete(1l);
     }
 
     @Test
     public void shouldFindByNameCity() {
+        City city = new City();
+        city.setName("City");
+        CityDto cityDto = new CityDto();
+        cityDto.setName("City");
 
+        when(cityRepository.findByName("City")).thenReturn(city);
+        when(modelMapper.map(cityDto, City.class)).thenReturn(city);
+        when(modelMapper.map(city, CityDto.class)).thenReturn(cityDto);
+
+        assertEquals(cityDto, cityService.findByName("City"));
+        verify(cityRepository).findByName("City");
     }
 }
