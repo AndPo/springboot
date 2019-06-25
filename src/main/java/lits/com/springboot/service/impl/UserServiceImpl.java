@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-
-        //todo add correct authotities
+        //todo add correct authou
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
     }
 

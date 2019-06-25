@@ -1,6 +1,6 @@
 package lits.com.springboot.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -8,6 +8,10 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = ("id, password"))
 public class User {
 
     @Id
@@ -26,25 +30,4 @@ public class User {
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
             inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")})
     private Set<Role> roles;
-
-
-    public User setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public  User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public User setRoles(Set<Role> roles) {
-        this.roles = roles;
-        return this;
-    }
 }

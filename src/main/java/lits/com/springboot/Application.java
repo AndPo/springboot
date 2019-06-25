@@ -11,10 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @SpringBootApplication
 public class Application implements ApplicationRunner {
@@ -37,16 +34,18 @@ public class Application implements ApplicationRunner {
 		String email = "serhiiilnytskyi@gmail.com";
 		String password = passwordEncoder.encode("F,hfrflf,hf314");
 
-		Role role = new Role()
-				.setName("ADMIN")
-				.setDescription("Some admin role");
+		Role role = new Role();
+		role.builder()
+				.name("ADMIN")
+				.description("Some admin role");
 
-		User user = new User()
-				.setEmail(email)
-				.setPassword(password)
-				.setRoles(new HashSet<Role>(){{add(role);}});
+		User user = new User();
+		user.builder()
+				.email(email)
+				.password(password)
+				.roles(new HashSet<Role>(){{add(role);}});
 
 //		roleRepository.save(role);
-//		userRepository.save(user);
+		userRepository.save(user);
 	}
 }
