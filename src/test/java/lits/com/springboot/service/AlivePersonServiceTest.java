@@ -2,12 +2,8 @@ package lits.com.springboot.service;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.model.Person;
-import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.service.impl.AlivePersonServiceImpl;
-import lits.com.springboot.service.impl.DeadPersonServiceImpl;
-import lits.com.springboot.service.impl.PersonServiceImpl;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,14 +12,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PersonServiceTest {
+public class AlivePersonServiceTest {
 
     @Mock
     private PersonRepository personRepository;
@@ -32,17 +28,19 @@ public class PersonServiceTest {
     private ModelMapper modelMapper;
 
     @InjectMocks
-    PersonService personService = new PersonServiceImpl();
+    PersonService alivePersonService = new AlivePersonServiceImpl();
 
     @Test
     public void shouldGetOnePerson(){
         Person person = new Person();
         PersonDto personDto = new PersonDto();
 
+        person.setDead(false);
+
         when(personRepository.findOne(1L)).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDto, personService.getById(1L));
+        assertEquals(personDto, alivePersonService.getById(1L));
         verify(personRepository).findOne(1L);
     }
 
@@ -56,11 +54,12 @@ public class PersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
+        person.setDead(false);
 
         when(personRepository.findAll()).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDtos, personService.getAllPersons());
+        assertEquals(personDtos, alivePersonService.getAllPersons());
         verify(personRepository).findAll();
     }
 
@@ -74,11 +73,12 @@ public class PersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
+        person.setDead(false);
 
         when(personRepository.findAllByCityId(1l)).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDtos, personService.getAllPersonsByCity(1l));
+        assertEquals(personDtos, alivePersonService.getAllPersonsByCity(1l));
         verify(personRepository).findAllByCityId(1l);
     }
 
@@ -92,11 +92,12 @@ public class PersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
+        person.setDead(false);
 
         when(personRepository.findAllByNameContains("Person")).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDtos, personService.getAllPersonsByName("Person"));
+        assertEquals(personDtos, alivePersonService.getAllPersonsByName("Person"));
         verify(personRepository).findAllByNameContains("Person");
     }
 
@@ -105,11 +106,13 @@ public class PersonServiceTest {
         PersonDto personDto = new PersonDto();
         Person person = new Person();
 
+        personDto.setDead(false);
+
         when(modelMapper.map(personDto, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDto, personService.save(personDto));
+        assertEquals(personDto, alivePersonService.save(personDto));
         verify(personRepository).save(person);
     }
 
@@ -123,11 +126,12 @@ public class PersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
+        person.setDead(false);
 
         when(personRepository.findByNameAndAge("Person", 10)).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDtos, personService.findByNameAndAge("Person", 10));
+        assertEquals(personDtos, alivePersonService.findByNameAndAge("Person", 10));
         verify(personRepository).findByNameAndAge("Person", 10);
     }
 
@@ -137,11 +141,13 @@ public class PersonServiceTest {
         PersonDto personDto = new PersonDto();
         Person person = new Person();
 
+        personDto.setDead(false);
+
         when(personRepository.save(person)).thenReturn(person);
         when(modelMapper.map(personDto, Person.class)).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
-        assertEquals(personDto, personService.save(personDto));
+        assertEquals(personDto, alivePersonService.save(personDto));
         verify(personRepository).save(person);
     }
 }
