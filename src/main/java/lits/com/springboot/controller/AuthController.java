@@ -1,4 +1,4 @@
-package lits.com.springboot.web;
+package lits.com.springboot.controller;
 
 import lits.com.springboot.dto.AuthRequest;
 import lits.com.springboot.service.AuthService;

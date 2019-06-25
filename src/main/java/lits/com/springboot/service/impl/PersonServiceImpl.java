@@ -43,7 +43,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        return personRepository.findByCityId(cityId).stream()
+        return personRepository.findAllByCityId(cityId).stream()
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }

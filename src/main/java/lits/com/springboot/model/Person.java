@@ -1,14 +1,22 @@
 package lits.com.springboot.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table
 @Data
+@ToString(of = "name")
 public class Person {
 
+    //Verify Lombok ToString;
+/*    public static void main(String[] args) {
+        Person person = new Person();
+        person.setName("John");
+        System.out.println(person);
+    }*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

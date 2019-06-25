@@ -1,7 +1,6 @@
 package lits.com.springboot.service;
 
 import lits.com.springboot.dto.PersonDto;
-import lits.com.springboot.model.Person;
 
 import java.util.List;
 

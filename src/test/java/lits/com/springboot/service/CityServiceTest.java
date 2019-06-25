@@ -76,7 +76,6 @@ public class CityServiceTest {
         cityDto.setName("City");
 
         when(cityRepository.findByName("City")).thenReturn(city);
-        when(modelMapper.map(cityDto, City.class)).thenReturn(city);
         when(modelMapper.map(city, CityDto.class)).thenReturn(cityDto);
 
         assertEquals(cityDto, cityService.findByName("City"));

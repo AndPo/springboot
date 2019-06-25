@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service("alivePersonService")
-public class AlivePersonService implements PersonService {
+@Service("deadPersonService")
+public class DeadPersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
@@ -28,7 +28,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public PersonDto getById(Long id) {
         return Optional.ofNullable(personRepository.findOne(id))
-                .filter(e -> !e.getIsDead())
+                .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
     }
@@ -36,15 +36,15 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> getAllPersons() {
         return personRepository.findAll().stream()
-                .filter(e -> !e.getIsDead())
+                .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        return personRepository.findByCityId(cityId).stream()
-                .filter(e -> !e.getIsDead())
+        return personRepository.findAllByCityId(cityId).stream()
+                .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -52,7 +52,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
         return personRepository.findAllByNameContains(name).stream()
-                .filter(e -> !e.getIsDead())
+                .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -62,7 +62,7 @@ public class AlivePersonService implements PersonService {
 //        City city = person.getCity();
 //        cityRepository.findByName(city.getName()) != null ?  :
         return Optional.ofNullable(personDto)
-                .filter(e -> !e.getDead())
+                .filter(PersonDto::getDead)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -72,7 +72,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
         return personRepository.findByNameAndAge(name, age).stream()
-                .filter(e -> !e.getIsDead())
+                .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -80,10 +80,11 @@ public class AlivePersonService implements PersonService {
     @Override
     public PersonDto update(PersonDto personDto) {
         return Optional.ofNullable(personDto)
-                .filter(e -> !e.getDead())
+                .filter(PersonDto::getDead)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
     }
 }
+
