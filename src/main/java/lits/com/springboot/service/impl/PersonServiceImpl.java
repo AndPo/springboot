@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 @Service(value = "personService")
 public class PersonServiceImpl implements PersonService {
 
-    //TODO ask teachers about using Optional and NotNullable in streams
-
     @Autowired
     private PersonRepository personRepository;
 
