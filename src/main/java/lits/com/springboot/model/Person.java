@@ -1,9 +1,12 @@
 package lits.com.springboot.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
 @Table
+@Data
 public class Person {
 
     @Id
@@ -21,17 +24,9 @@ public class Person {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    public Long getId() {
-        return id;
-    }
-
     public Person setId(Long id) {
         this.id = id;
         return this;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Person setName(String name) {
@@ -39,26 +34,14 @@ public class Person {
         return this;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
     public Person setAge(Integer age) {
         this.age = age;
         return this;
     }
 
-    public Boolean getDead() {
-        return isDead;
-    }
-
     public Person setDead(Boolean dead) {
         isDead = dead;
         return this;
-    }
-
-    public City getCity() {
-        return city;
     }
 
     public Person setCity(City city) {

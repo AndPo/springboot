@@ -28,7 +28,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public PersonDto getById(Long id) {
         return Optional.ofNullable(personRepository.findOne(id))
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
     }
@@ -36,7 +36,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> getAllPersons() {
         return personRepository.findAll().stream()
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -44,7 +44,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
         return personRepository.findByCityId(cityId).stream()
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -52,7 +52,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
         return personRepository.findAllByNameContains(name).stream()
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
@@ -72,7 +72,7 @@ public class AlivePersonService implements PersonService {
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
         return personRepository.findByNameAndAge(name, age).stream()
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
