@@ -4,12 +4,14 @@ import lits.com.springboot.dto.CityDto;
 import lits.com.springboot.model.City;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.CityService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service(value = "cityService")
 public class CityServiceImpl implements CityService {
 

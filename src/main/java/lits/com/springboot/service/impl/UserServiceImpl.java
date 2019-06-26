@@ -3,6 +3,7 @@ package lits.com.springboot.service.impl;
 import lits.com.springboot.model.User;
 import lits.com.springboot.repository.UserRepository;
 import lits.com.springboot.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service(value = "userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -37,7 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<GrantedAuthority> getAuthority(User user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        user.getRoles().forEach(role ->{
+        user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         });
 
