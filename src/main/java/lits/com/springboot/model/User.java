@@ -3,15 +3,16 @@ package lits.com.springboot.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
-@Entity
-@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = ("id, password"))
+@ToString(exclude = {"id", "password"})
+@Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -19,12 +20,15 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "email", unique = true)
     private String email;
 
+    @NotNull
     @Column(name = "password")
     private String password;
 
+    @NotNull
     @ManyToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinTable(name="user_roles",
             joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},

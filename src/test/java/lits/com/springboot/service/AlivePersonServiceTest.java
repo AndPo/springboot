@@ -35,7 +35,7 @@ public class AlivePersonServiceTest {
         Person person = new Person();
         PersonDto personDto = new PersonDto();
 
-        person.setDead(false);
+        person.setIsDead(false);
 
         when(personRepository.findOne(1L)).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
@@ -54,7 +54,7 @@ public class AlivePersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
-        person.setDead(false);
+        person.setIsDead(false);
 
         when(personRepository.findAll()).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
@@ -73,7 +73,7 @@ public class AlivePersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
-        person.setDead(false);
+        person.setIsDead(false);
 
         when(personRepository.findAllByCityId(1l)).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
@@ -92,7 +92,7 @@ public class AlivePersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
-        person.setDead(false);
+        person.setIsDead(false);
 
         when(personRepository.findAllByNameContains("Person")).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
@@ -106,7 +106,7 @@ public class AlivePersonServiceTest {
         PersonDto personDto = new PersonDto();
         Person person = new Person();
 
-        personDto.setDead(false);
+        personDto.setIsDead(false);
 
         when(modelMapper.map(personDto, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(person);
@@ -126,7 +126,7 @@ public class AlivePersonServiceTest {
 
         persons.add(person);
         personDtos.add(personDto);
-        person.setDead(false);
+        person.setIsDead(false);
 
         when(personRepository.findByNameAndAge("Person", 10)).thenReturn(persons);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
@@ -141,7 +141,7 @@ public class AlivePersonServiceTest {
         PersonDto personDto = new PersonDto();
         Person person = new Person();
 
-        personDto.setDead(false);
+        personDto.setIsDead(false);
 
         when(personRepository.save(person)).thenReturn(person);
         when(modelMapper.map(personDto, Person.class)).thenReturn(person);

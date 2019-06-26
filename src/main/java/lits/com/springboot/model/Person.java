@@ -1,14 +1,16 @@
 package lits.com.springboot.model;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"id"})
 @Entity
 @Table
-@Data
-@ToString(of = "name")
 public class Person {
 
     @Id
@@ -25,29 +27,4 @@ public class Person {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
-
-    public Person setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public Person setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public Person setAge(Integer age) {
-        this.age = age;
-        return this;
-    }
-
-    public Person setDead(Boolean dead) {
-        isDead = dead;
-        return this;
-    }
-
-    public Person setCity(City city) {
-        this.city = city;
-        return this;
-    }
 }

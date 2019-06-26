@@ -63,7 +63,7 @@ public class AlivePersonServiceImpl implements PersonService {
 //        City city = person.getCity();
 //        cityRepository.findByName(city.getName()) != null ?  :
         return Optional.ofNullable(personDto)
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -81,7 +81,7 @@ public class AlivePersonServiceImpl implements PersonService {
     @Override
     public PersonDto update(PersonDto personDto) {
         return Optional.ofNullable(personDto)
-                .filter(e -> !e.getDead())
+                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
