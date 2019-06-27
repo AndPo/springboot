@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findOneByEmail(s);
 
         if (Objects.isNull(user)) {
+            log.error("Invalid username or password");
             throw new UsernameNotFoundException("Invalid username or password.");
         }
         //todo add correct authou

@@ -33,8 +33,16 @@ public class AuthServiceImpl implements AuthService {
                         pass
                 )
         );
+
+        log.info("Attempting create token for user " + login);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = userRepository.findOneByEmail(login);
+
+        if (user == null || user.equals(new User())){
+            log.warn("Got null or empty Person Object from repository after saving it");
+        }
+
         return tokenService.createToken(user.getId());
     }
 }
