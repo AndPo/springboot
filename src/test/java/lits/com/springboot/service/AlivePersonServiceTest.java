@@ -36,7 +36,6 @@ public class AlivePersonServiceTest {
         PersonDto personDto = new PersonDto();
 
         person.setIsDead(false);
-
         when(personRepository.findOne(1L)).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 

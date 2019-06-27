@@ -26,19 +26,31 @@ public class AlivePersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto getById(Long id) {
-        return Optional.ofNullable(personRepository.findOne(id))
+        PersonDto personDto = Optional.ofNullable(personRepository.findOne(id))
                 .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
+                .orElseGet(PersonDto::new);
+
+        if (personDto.equals(new PersonDto())) {
+            log.warn("Got null or empty Person Object from repository");
+        } else {
+            log.info("Got " + personDto + " Object from repository");
+        }
+
+        return personDto;
     }
 
     @Override
     public List<PersonDto> getAllPersons() {
-        return personRepository.findAll().stream()
+        List<PersonDto> personDtos = personRepository.findAll().stream()
                 .filter(Objects::nonNull)
                 .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+
+
+        return personDtos;
     }
 
     @Override
