@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,37 +29,66 @@ public class DeadPersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto getById(Long id) {
-        return Optional.ofNullable(personRepository.findOne(id))
+        PersonDto personDto = Optional.ofNullable(personRepository.findOne(id))
                 .filter(Person::getIsDead)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
+
+        if (personDto.equals(new PersonDto())) {
+            log.warn("Got null or empty Person Object from repository");
+        } else {
+            log.info("Got " + personDto + " Object from repository");
+        }
+
+        return personDto;
     }
 
     @Override
     public List<PersonDto> getAllPersons() {
-        return personRepository.findAll().stream()
+        List<PersonDto> personDtos = personRepository.findAll().stream()
                 .filter(Objects::nonNull)
                 .filter(Person::getIsDead)
+                .peek(e -> log.info("Got " + e + " attempting add to list" ))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        return personRepository.findAllByCityId(cityId).stream()
+        List<PersonDto> personDtos = personRepository.findAllByCityId(cityId).stream()
                 .filter(Objects::nonNull)
                 .filter(Person::getIsDead)
+                .peek(e -> log.info("Got " + e + " attempting add to list" ))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
-        return personRepository.findAllByNameContains(name).stream()
+        List<PersonDto> personDtos = personRepository.findAllByNameContains(name).stream()
                 .filter(Objects::nonNull)
                 .filter(Person::getIsDead)
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
@@ -66,31 +96,69 @@ public class DeadPersonServiceImpl implements PersonService {
 //  todo implement logic with city
 //      City city = person.getCity();
 //      cityRepository.findByName(city.getName()) != null ?  :
-        return Optional.ofNullable(personDto)
+
+        if (personDto.equals(new PersonDto()) || personDto == null) {
+            log.warn("Got null or empty PersonDto. Nothing to save");
+        } else {
+            log.info("Attempting to save " + personDto + " to repository");
+        }
+
+        PersonDto resultPersonDto = Optional.ofNullable(personDto)
                 .filter(PersonDto::getIsDead)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
+
+        if (resultPersonDto.equals(new PersonDto())) {
+            log.warn("Got null or empty Person Object from repository after saving it");
+        } else {
+            log.info("Got " + personDto + " Object from repository");
+        }
+
+        return resultPersonDto;
     }
 
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
-        return personRepository.findByNameAndAge(name, age).stream()
+        List<PersonDto> personDtos = personRepository.findByNameAndAge(name, age).stream()
                 .filter(Objects::nonNull)
                 .filter(Person::getIsDead)
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+
+        return personDtos;
     }
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        return Optional.ofNullable(personDto)
+
+        if (personDto.equals(new PersonDto()) || personDto == null) {
+            log.warn("Got null or empty PersonDto. Nothing to save");
+        } else {
+            log.info("Attempting to save " + personDto + " to repository");
+        }
+
+        PersonDto resultPersonDto = Optional.ofNullable(personDto)
                 .filter(PersonDto::getIsDead)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .orElse(new PersonDto());
+
+        if (resultPersonDto.equals(new PersonDto())) {
+            log.warn("Got null or empty Person Object from repository after saving it");
+        } else {
+            log.info("Got " + personDto + " Object from repository");
+        }
+
+        return resultPersonDto;
     }
 }
 
