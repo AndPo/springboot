@@ -10,9 +10,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.HashSet;
 
+@EnableSwagger2
 @SpringBootApplication
 public class Application implements ApplicationRunner {
 
@@ -37,15 +39,15 @@ public class Application implements ApplicationRunner {
 		Role role = new Role();
 		role.builder()
 				.name("ADMIN")
-				.description("Some admin role");
+				.description("Some admin role").build();
 
 		User user = new User();
 		user.builder()
 				.email(email)
 				.password(password)
-				.roles(new HashSet<Role>(){{add(role);}});
+				.roles(new HashSet<Role>(){{add(role);}}).build();
 
 //		roleRepository.save(role);
-		userRepository.save(user);
+//		userRepository.save(user);
 	}
 }
