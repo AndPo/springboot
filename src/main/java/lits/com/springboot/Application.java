@@ -1,7 +1,10 @@
 package lits.com.springboot;
 
+import lits.com.springboot.model.Person;
+import lits.com.springboot.model.Pet;
 import lits.com.springboot.model.Role;
 import lits.com.springboot.model.User;
+import lits.com.springboot.repository.PetRepository;
 import lits.com.springboot.repository.RoleRepository;
 import lits.com.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class Application implements ApplicationRunner {
 	@Autowired
 	RoleRepository roleRepository;
 
+	@Autowired
+	PetRepository petRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -49,5 +55,12 @@ public class Application implements ApplicationRunner {
 
 //		roleRepository.save(role);
 //		userRepository.save(user);
+
+		Pet pet = new Pet();
+		pet.setName("Gav");
+		pet.setOwner(Person.builder().name("HappyMan").build());
+		pet.setType("Dog");
+
+		petRepository.save(pet);
 	}
 }
