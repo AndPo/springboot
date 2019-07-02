@@ -1,6 +1,7 @@
 package lits.com.springboot.model;
 
 import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -15,5 +16,6 @@ public class Pet {
 
     private String type;
 
+    @DBRef
     private Person owner;
 }

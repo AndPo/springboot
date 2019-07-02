@@ -4,6 +4,7 @@ import lits.com.springboot.model.Person;
 import lits.com.springboot.model.Pet;
 import lits.com.springboot.model.Role;
 import lits.com.springboot.model.User;
+import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.repository.PetRepository;
 import lits.com.springboot.repository.RoleRepository;
 import lits.com.springboot.repository.UserRepository;
@@ -33,6 +34,9 @@ public class Application implements ApplicationRunner {
 	@Autowired
 	PetRepository petRepository;
 
+	@Autowired
+	PersonRepository personRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -42,23 +46,26 @@ public class Application implements ApplicationRunner {
 		String email = "serhiiilnytskyi@gmail.com";
 		String password = passwordEncoder.encode("F,hfrflf,hf314");
 
-		Role role = new Role();
-		role.builder()
+		Role role = new Role.builder()
 				.name("ADMIN")
-				.description("Some admin role").build();
+				.description("Some admin role")
+				.build();
 
-		User user = new User();
-		user.builder()
+		User user = User.builder()
 				.email(email)
 				.password(password)
-				.roles(new HashSet<Role>(){{add(role);}}).build();
+				.roles(new HashSet<Role>(){{add(role);}})
+				.build();
 
-//		roleRepository.save(role);
-//		userRepository.save(user);
+		roleRepository.save(role);
+		userRepository.save(user);
+
+		Person person = Person.builder().name("HappyMan").age(21).isDead(false).build();
+		personRepository.save(person);
 
 		Pet pet = new Pet();
 		pet.setName("Gav");
-		pet.setOwner(Person.builder().name("HappyMan").build());
+		pet.setOwner(person);
 		pet.setType("Dog");
 
 		petRepository.save(pet);

@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @ToString(exclude = {"password"})
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthRequest {
 
     @NotNull

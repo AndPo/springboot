@@ -13,6 +13,5 @@ public class PetDto {
 
     private String type;
 
-    @DBRef
-    private Person owner;
+    private PersonDto owner;
 }
