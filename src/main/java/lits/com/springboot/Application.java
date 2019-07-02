@@ -46,10 +46,9 @@ public class Application implements ApplicationRunner {
 		String email = "serhiiilnytskyi@gmail.com";
 		String password = passwordEncoder.encode("F,hfrflf,hf314");
 
-		Role role = new Role.builder()
-				.name("ADMIN")
-				.description("Some admin role")
-				.build();
+		Role role = new Role();
+				role.setName("ADMIN");
+				role.setDescription("Some admin role");
 
 		User user = User.builder()
 				.email(email)
@@ -57,8 +56,8 @@ public class Application implements ApplicationRunner {
 				.roles(new HashSet<Role>(){{add(role);}})
 				.build();
 
-		roleRepository.save(role);
-		userRepository.save(user);
+		//roleRepository.save(role);
+//		userRepository.save(user);
 
 		Person person = Person.builder().name("HappyMan").age(21).isDead(false).build();
 		personRepository.save(person);
