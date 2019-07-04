@@ -2,7 +2,6 @@ package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.model.Person;
-import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
