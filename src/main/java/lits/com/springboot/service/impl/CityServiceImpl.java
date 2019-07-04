@@ -1,7 +1,7 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.CityDto;
-import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.exception.CityNotFoundException;
 import lits.com.springboot.model.City;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.service.CityService;
@@ -25,26 +25,17 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityDto findOne(Long id) {
-        CityDto cityDto = Optional.ofNullable(cityRepository.findOne(id))
+        CityDto cityDto = Optional.ofNullable(cityRepository.findById(id))
                 .map(e -> modelMapper.map(e, CityDto.class))
-                .orElse(new CityDto());
-
-        if (cityDto.equals(new CityDto())) {
-            log.warn("Got null or empty City Object from repository");
-        } else {
-            log.info("Got " + cityDto + " Object from repository");
-        }
-
+                .orElseThrow(() -> new CityNotFoundException("City with id: " + id + " not found"));
         return cityDto;
     }
 
     @Override
-    public CityDto findByName(String name){
-        City city = cityRepository.findByName(name);
+    public CityDto findByName(String name) {
+        City city = cityRepository.findByName(name)
+                .orElseThrow(() -> new CityNotFoundException("City with name: " + name + " not found"));
 
-        if (city == null) {
-            throw new RuntimeException("User not found");
-        }
         return modelMapper.map(city, CityDto.class);
     }
 
@@ -52,23 +43,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityDto save(CityDto cityDto) {
 
-        if (cityDto.equals(new CityDto()) || cityDto == null) {
-            log.warn("Got null or empty PersonDto. Nothing to save");
-        } else {
-            log.info("Attempting to save " + cityDto + " to repository");
-        }
-
         CityDto resultCityDto = Optional.ofNullable(cityDto)
                 .map(e -> modelMapper.map(e, City.class))
                 .map(e -> cityRepository.save(e))
                 .map(e -> modelMapper.map(e, CityDto.class))
-                .orElse(new CityDto());
-
-        if (resultCityDto.equals(new CityDto())) {
-            log.warn("Got null or empty City Object from repository");
-        } else {
-            log.info("Got " + resultCityDto + " Object from repository");
-        }
+                .orElseThrow(() -> new CityNotFoundException("CityDtois null"));
 
         return resultCityDto;
     }
@@ -76,31 +55,20 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityDto update(CityDto cityDto) {
 
-        if (cityDto.equals(new CityDto()) || cityDto == null) {
-            log.warn("Got null or empty PersonDto. Nothing to save");
-        } else {
-            log.info("Attempting to save " + cityDto + " to repository");
-        }
         // Name can't repeat in other
-        CityDto resultCityDto = Optional.ofNullable(cityRepository.findByName(cityDto.getName()))
+        CityDto resultCityDto = cityRepository.findByName(cityDto.getName())
                 .map(e -> e.setDescription(cityDto.getDescription()))
                 .map(e -> cityRepository.save(e))
                 .map(e -> modelMapper.map(e, CityDto.class))
-                .orElse(new CityDto());
-
-        if (resultCityDto.equals(new CityDto())) {
-            log.warn("Got null or empty City Object from repository");
-        } else {
-            log.info("Got " + resultCityDto + " Object from repository");
-        }
+                .orElseThrow(() -> new CityNotFoundException("City with name: " + cityDto.getName() + " not found"));
 
         return resultCityDto;
     }
 
     @Override
     public void delete(Long id) {
-        log.info("attempting to delete City Object from database");
-        cityRepository.delete(id);
+        log.info("attempting to deleteById City Object from database");
+        cityRepository.deleteById(id);
     }
 
 /*    @Override

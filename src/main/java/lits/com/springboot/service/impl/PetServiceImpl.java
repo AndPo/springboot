@@ -2,6 +2,8 @@ package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.dto.PetDto;
+import lits.com.springboot.exception.PersonNotFoundException;
+import lits.com.springboot.exception.PetNotFoundException;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.repository.PetRepository;
@@ -37,12 +39,15 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public List<PetDto> findPetsByOwnerPersonId(Long id) {
-        Person person = personRepository.findOne(id);
-        if (person != null) {
-            return petRepository.findByOwner(id).stream()
-                    .filter(Objects::nonNull)
-                    .map(e -> modelMapper.map(e, PetDto.class))
-                    .collect(Collectors.toList());
-        }else return null;
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException("Person with id: " + id + " not found"));
+
+        return petRepository.findByOwner(id).stream()
+                .peek(e -> {
+                    if (e == null)
+                    throw new PetNotFoundException("Pet with owner id:" + id + "null or not found");
+                })
+                .map(e -> modelMapper.map(e, PetDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -30,10 +30,10 @@ public class CityServiceTest {
 
     @Test
     public void shouldGetOneCity(){
-        when(cityRepository.findOne(1l)).thenReturn(new City());
+        when(cityRepository.findById(1l).get()).thenReturn(new City());
 
         cityService.findOne(1l);
-        verify(cityRepository).findOne(1l);
+        verify(cityRepository).findById(1l);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CityServiceTest {
     @Test
     public void shouldDeleteCity() {
         cityService.delete(1l);
-        verify(cityRepository).delete(1l);
+        verify(cityRepository).deleteById(1l);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class CityServiceTest {
         CityDto cityDto = new CityDto();
         cityDto.setName("City");
 
-        when(cityRepository.findByName("City")).thenReturn(city);
+        when(cityRepository.findByName("City").get()).thenReturn(city);
         when(modelMapper.map(city, CityDto.class)).thenReturn(cityDto);
 
         assertEquals(cityDto, cityService.findByName("City"));

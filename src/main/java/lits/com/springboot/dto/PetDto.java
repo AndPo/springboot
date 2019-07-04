@@ -1,16 +1,20 @@
 package lits.com.springboot.dto;
 
-import lits.com.springboot.model.Person;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Data
 public class PetDto {
 
     private String id;
 
+    @NotEmpty
+    @Size(max = 32)
     private String name;
 
+    //Todo create enum or entity with pets types
     private String type;
 
     private PersonDto owner;

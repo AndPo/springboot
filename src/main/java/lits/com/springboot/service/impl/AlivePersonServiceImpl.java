@@ -1,6 +1,7 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.exception.PersonNotFoundException;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.PersonRepository;
 import lits.com.springboot.service.PersonService;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service("alivePersonService")
@@ -25,28 +26,24 @@ public class AlivePersonServiceImpl implements PersonService {
     @Autowired
     private ModelMapper modelMapper;
 
+
     @Override
     public PersonDto getById(Long id) {
-        PersonDto personDto = Optional.ofNullable(personRepository.findOne(id))
+        return personRepository.findById(id)
                 .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElseGet(PersonDto::new);
-
-        if (personDto.equals(new PersonDto())) {
-            log.warn("Got null or empty Person Object from repository");
-        } else {
-            log.info("Got " + personDto + " Object from repository");
-        }
-
-        return personDto;
+                .orElseThrow(() -> new PersonNotFoundException("Person with this id not found"));
     }
 
     @Override
     public List<PersonDto> getAllPersons() {
-        List<PersonDto> personDtos = personRepository.findAll().stream()
-                .filter(Objects::nonNull)
+        List<PersonDto> personDtos = StreamSupport.stream(personRepository.findAll().spliterator(), false)
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person not found");
+                })
                 .filter(e -> !e.getIsDead())
-                .peek(e -> log.info("Got " + e + " attempting add to list" ))
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
 
@@ -59,22 +56,11 @@ public class AlivePersonServiceImpl implements PersonService {
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
         List<PersonDto> personDtos = personRepository.findAllByCityId(cityId).stream()
-                .filter(Objects::nonNull)
-                .filter(e -> !e.getIsDead())
-                .peek(e -> log.info("Got " + e + " attempting add to list" ))
-                .map(e -> modelMapper.map(e, PersonDto.class))
-                .collect(Collectors.toList());
-
-        if (personDtos.equals(new ArrayList<PersonDto>())) {
-            log.warn("Got empty list of Person Objects from repository");
-        }
-        return personDtos;
-    }
-
-    @Override
-    public List<PersonDto> getAllPersonsByName(String name) {
-        List<PersonDto> personDtos = personRepository.findAllByNameContains(name).stream()
-                .filter(Objects::nonNull)
+                // todo flatMap(e -> e.orElseThrow(() -> new UserNotFoundException("546")))
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
                 .filter(e -> !e.getIsDead())
                 .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -85,7 +71,25 @@ public class AlivePersonServiceImpl implements PersonService {
         }
 
         return personDtos;
+    }
 
+    @Override
+    public List<PersonDto> getAllPersonsByName(String name) {
+        List<PersonDto> personDtos = personRepository.findAllByNameContains(name).stream()
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
+                .filter(e -> !e.getIsDead())
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
+                .map(e -> modelMapper.map(e, PersonDto.class))
+                .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
@@ -94,25 +98,12 @@ public class AlivePersonServiceImpl implements PersonService {
 //      City city = person.getCity();
 //      cityRepository.findByName(city.getName()) != null ?  :
 
-        if (personDto.equals(new PersonDto()) || personDto == null) {
-            log.warn("Got null or empty PersonDto. Nothing to save");
-        } else {
-            log.info("Attempting to save " + personDto + " to repository");
-        }
-
-
         PersonDto resultPersonDto = Optional.ofNullable(personDto)
-                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, Person.class))
+                .filter(e -> !e.getIsDead())
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
-
-        if (resultPersonDto.equals(new PersonDto())) {
-            log.warn("Got null or empty Person Object from repository after saving it");
-        } else {
-            log.info("Got " + personDto + " Object from repository");
-        }
+                .orElseThrow(() -> new PersonNotFoundException("PersonDto is null"));
 
         return resultPersonDto;
     }
@@ -120,7 +111,10 @@ public class AlivePersonServiceImpl implements PersonService {
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
         List<PersonDto> personDtos = personRepository.findByNameAndAge(name, age).stream()
-                .filter(Objects::nonNull)
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
                 .filter(e -> !e.getIsDead())
                 .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -136,26 +130,15 @@ public class AlivePersonServiceImpl implements PersonService {
     @Override
     public PersonDto update(PersonDto personDto) {
 
-        if (personDto.equals(new PersonDto()) || personDto == null) {
-            log.warn("Got null or empty PersonDto. Nothing to save");
-        } else {
-            log.info("Attempting to save " + personDto + " to repository");
-        }
-
         PersonDto resultPersonDto = Optional.ofNullable(personDto)
-                .filter(e -> !e.getIsDead())
                 .map(e -> modelMapper.map(e, Person.class))
+                .filter(e -> !e.getIsDead())
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
-
-        if (resultPersonDto.equals(new PersonDto())) {
-            log.warn("Got null or empty Person Object from repository after saving it");
-        } else {
-            log.info("Got " + personDto + " Object from repository");
-        }
-
+                .orElseThrow(() -> new PersonNotFoundException("PersonDto is null"));
 
         return resultPersonDto;
+
+
     }
 }

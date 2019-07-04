@@ -1,5 +1,6 @@
 package lits.com.springboot.service.impl;
 
+import lits.com.springboot.exception.UserNotFoundException;
 import lits.com.springboot.model.User;
 import lits.com.springboot.repository.UserRepository;
 import lits.com.springboot.service.UserService;
@@ -27,13 +28,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findOneByEmail(s);
+        User user = userRepository.findOneByEmail(s)
+                .orElseThrow(() -> new UserNotFoundException("User with email: " + s + " not found"));
 
-        if (Objects.isNull(user)) {
-            log.error("Invalid username or password");
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-        //todo add correct authou
+       //todo add correct authou
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
     }
 
@@ -48,6 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + id + " not found"));
     }
 }

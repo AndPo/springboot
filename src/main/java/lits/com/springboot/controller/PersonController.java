@@ -51,7 +51,7 @@ public class PersonController {
 
     @PutMapping(value = "")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public PersonDto updatePerson(@RequestBody PersonDto personDto){
+    public PersonDto updatePerson(@Validated @RequestBody PersonDto personDto){
         return qualifiedPersonService(null).update(personDto);
     }
 

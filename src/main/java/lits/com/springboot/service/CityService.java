@@ -6,8 +6,6 @@ public interface CityService {
 
     CityDto findOne(Long id);
 
-
-
     CityDto save(CityDto cityDto);
 
     CityDto update(CityDto cityDto);

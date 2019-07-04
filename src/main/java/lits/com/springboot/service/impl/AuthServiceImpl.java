@@ -1,5 +1,6 @@
 package lits.com.springboot.service.impl;
 
+import lits.com.springboot.exception.UserNotFoundException;
 import lits.com.springboot.model.User;
 import lits.com.springboot.repository.UserRepository;
 import lits.com.springboot.service.AuthService;
@@ -37,11 +38,8 @@ public class AuthServiceImpl implements AuthService {
         log.info("Attempting create token for user " + login);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = userRepository.findOneByEmail(login);
-
-        if (user == null || user.equals(new User())){
-            log.warn("Got null or empty Person Object from repository after saving it");
-        }
+        User user = userRepository.findOneByEmail(login)
+                .orElseThrow(() -> new UserNotFoundException("User with login " + login + " not found"));
 
         return tokenService.createToken(user.getId());
     }

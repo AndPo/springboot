@@ -1,6 +1,5 @@
 package lits.com.springboot.service;
 
-import lits.com.springboot.dto.PersonDto;
 import lits.com.springboot.dto.PetDto;
 
 import java.util.List;

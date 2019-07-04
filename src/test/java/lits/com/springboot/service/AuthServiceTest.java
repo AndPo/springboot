@@ -33,7 +33,7 @@ public class AuthServiceTest {
         User user  = new User();
         user.setId(1L);
 
-        when(userRepository.findOneByEmail("login")).thenReturn(user);
+        when(userRepository.findOneByEmail("login").get()).thenReturn(user);
         when(tokenService.createToken(user.getId())).thenReturn("BarrerToken");
 
         assertEquals("BarrerToken", authService.auth("login", "pass"));

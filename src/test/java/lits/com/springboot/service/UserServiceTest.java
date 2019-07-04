@@ -38,7 +38,7 @@ public class UserServiceTest {
         user.setEmail("UserName");
         user.setPassword("Pass");
 
-        when(userRepository.findOneByEmail("UserName")).thenReturn(user);
+        when(userRepository.findOneByEmail("UserName").get()).thenReturn(user);
 
         assertNotNull(userService.loadUserByUsername("UserName"));
         verify(userRepository).findOneByEmail("UserName");
@@ -66,7 +66,7 @@ public class UserServiceTest {
     public void shouldGetUserById() {
         User user = new User();
 
-        when(userRepository.findById(1L)).thenReturn(user);
+        when(userRepository.findById(1L).get()).thenReturn(user);
 
         assertEquals(user, userService.findById(1L));
         verify(userRepository).findById(1L);
