@@ -4,17 +4,25 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 
   datasource:
     url: jdbc:mysql://localhost:3306/lessons?serverTimezone=UTC
     username: root
     password: root
 
+  data:
+    mongodb:
+      database: lits
+      port: 27017
+      host: localhost
+
+  liquibase:
+    change-log: classpath:/changelog/db.changelog-master.yaml
+
 security:
   token:
     secret: 9DKxk4ZuRV7SoyIR4s5Szh79a1zwIm8q
     expire: 24
 
-liquibase:
-  change-log: classpath:/changelog/db.changelog-master.yaml
+

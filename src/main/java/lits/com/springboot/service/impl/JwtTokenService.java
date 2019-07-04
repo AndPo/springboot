@@ -37,10 +37,10 @@ public class JwtTokenService implements TokenService {
             final Claims body = claimsJws.getBody();
             return body.get(userIdClaim, Long.class);
         } catch (ExpiredJwtException e) {
-            logger.debug("JWT token has expired: {}", e.getMessage());
+            log.debug("JWT token has expired: {}", e.getMessage());
             throw new CredentialsExpiredException("JWT is not valid", e);
         } catch (JwtException e) {
-            logger.debug("JWT is not valid: {}", e.getMessage());
+            log.debug("JWT is not valid: {}", e.getMessage());
             throw new BadCredentialsException("JWT is not valid", e);
         }
 

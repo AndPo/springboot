@@ -1,6 +1,9 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.exception.PersonNotFoundException;
+import lits.com.springboot.exception.PetNotFoundException;
+import lits.com.springboot.exception.UserNotFoundException;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
@@ -10,10 +13,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service(value = "personService")
@@ -27,33 +32,63 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonDto getById(Long id) {
-        return Optional.ofNullable(personRepository.findOne(id))
+        return personRepository.findById(id)
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
+                .orElseThrow(() -> new PersonNotFoundException("Person with this id not found"));
     }
 
     @Override
     public List<PersonDto> getAllPersons() {
-        return personRepository.findAll().stream()
-                .filter(Objects::nonNull)
+        List<PersonDto> personDtos = StreamSupport.stream(personRepository.findAll().spliterator(), false)
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person not found");
+                })
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+        return personDtos;
     }
 
     @Override
     public List<PersonDto> getAllPersonsByCity(Long cityId) {
-        return personRepository.findAllByCityId(cityId).stream()
-                .filter(Objects::nonNull)
+        List<PersonDto> personDtos = personRepository.findAllByCityId(cityId).stream()
+                // todo flatMap(e -> e.orElseThrow(() -> new UserNotFoundException("546")))
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
     public List<PersonDto> getAllPersonsByName(String name) {
-        return personRepository.findAllByNameContains(name).stream()
-                .filter(Objects::nonNull)
+        List<PersonDto> personDtos = personRepository.findAllByNameContains(name).stream()
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
@@ -61,27 +96,45 @@ public class PersonServiceImpl implements PersonService {
 //  todo implement logic with city
 //      City city = person.getCity();
 //      cityRepository.findByName(city.getName()) != null ?  :
-        return Optional.ofNullable(personDto)
+
+        PersonDto resultPersonDto = Optional.ofNullable(personDto)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
+                .orElseThrow(() -> new PersonNotFoundException("PersonDto is null"));
+
+        return resultPersonDto;
     }
 
     @Override
     public List<PersonDto> findByNameAndAge(String name, Integer age) {
-        return personRepository.findByNameAndAge(name, age).stream()
-                .filter(Objects::nonNull)
+        List<PersonDto> personDtos = personRepository.findByNameAndAge(name, age).stream()
+                .peek(e -> {
+                    if (e == null)
+                        throw new PersonNotFoundException("Person is null");
+                })
+                .peek(e -> log.info("Got " + e + " attempting add to list"))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+
+        if (personDtos.equals(new ArrayList<PersonDto>())) {
+            log.warn("Got empty list of Person Objects from repository");
+        }
+
+        return personDtos;
     }
 
     @Override
     public PersonDto update(PersonDto personDto) {
-        return Optional.ofNullable(personDto)
+
+        PersonDto resultPersonDto = Optional.ofNullable(personDto)
                 .map(e -> modelMapper.map(e, Person.class))
                 .map(e -> personRepository.save(e))
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
+                .orElseThrow(() -> new PersonNotFoundException("PersonDto is null"));
+
+        return resultPersonDto;
+
+
     }
 }

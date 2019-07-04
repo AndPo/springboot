@@ -71,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers("/**/login").permitAll()
+                    .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                    .permitAll()
 //                    .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
 //                    .antMatchers("/api/user").hasRole("ADMIN")
                     .anyRequest()

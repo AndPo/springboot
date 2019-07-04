@@ -1,17 +1,17 @@
 package lits.com.springboot.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import javax.validation.constraints.Pattern;
 
 @Data
-@ToString(exclude = {"password"})
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
 
+    //Todo ask teachere about diff
+    // @Email
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$" )
     private String email;
 
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$" )
     private String password;
 }

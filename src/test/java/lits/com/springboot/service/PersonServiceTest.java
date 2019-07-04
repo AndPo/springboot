@@ -39,11 +39,11 @@ public class PersonServiceTest {
         Person person = new Person();
         PersonDto personDto = new PersonDto();
 
-        when(personRepository.findOne(1L)).thenReturn(person);
+        when(personRepository.findById(1L).get()).thenReturn(person);
         when(modelMapper.map(person, PersonDto.class)).thenReturn(personDto);
 
         assertEquals(personDto, personService.getById(1L));
-        verify(personRepository).findOne(1L);
+        verify(personRepository).findById(1L);
     }
 
     @Test

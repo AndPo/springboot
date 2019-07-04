@@ -1,11 +1,15 @@
 package lits.com.springboot.repository;
 
 import lits.com.springboot.model.City;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface CityRepository extends JpaRepository<City, Long> {
+@Repository
+public interface CityRepository extends CrudRepository<City, Long> {
 
-    City findByName(String name);
+    Optional<City> findByName(String name);
+
+    void deleteById(Long id);
 }
