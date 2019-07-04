@@ -1,6 +1,7 @@
 package lits.com.springboot.service.impl;
 
 import lits.com.springboot.dto.PersonDto;
+import lits.com.springboot.exception.PersonNotFoundException;
 import lits.com.springboot.model.Person;
 import lits.com.springboot.repository.CityRepository;
 import lits.com.springboot.repository.PersonRepository;
@@ -30,7 +31,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonDto getById(Long id) {
         PersonDto personDto = Optional.ofNullable(personRepository.findOne(id))
                 .map(e -> modelMapper.map(e, PersonDto.class))
-                .orElse(new PersonDto());
+                .orElseThrow(() -> new PersonNotFoundException("Person with this id not found"));
         if (personDto.equals(new PersonDto())) {
             log.warn("Got null or empty Person Object from repository");
         } else {

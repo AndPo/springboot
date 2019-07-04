@@ -57,16 +57,16 @@ public class Application implements ApplicationRunner {
 				.build();
 
 		//roleRepository.save(role);
-//		userRepository.save(user);
+		//userRepository.save(user);
 
-		Person person = Person.builder().name("HappyMan").age(21).isDead(false).build();
-		personRepository.save(person);
-
-		Pet pet = new Pet();
-		pet.setName("Gav");
-		pet.setOwner(person);
-		pet.setType("Dog");
-
-		petRepository.save(pet);
+//		Person person = Person.builder().name("HappyMan").age(21).isDead(false).build();
+//		personRepository.save(person);
+//
+//		Pet pet = new Pet();
+//		pet.setName("Gav");
+//		pet.setOwner(person);
+//		pet.setType("Dog");
+//
+//		petRepository.save(pet);
 	}
 }

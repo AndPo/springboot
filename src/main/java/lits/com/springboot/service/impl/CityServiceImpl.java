@@ -39,6 +39,17 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    public CityDto findByName(String name){
+        City city = cityRepository.findByName(name);
+
+        if (city == null) {
+            throw new RuntimeException("User not found");
+        }
+        return modelMapper.map(city, CityDto.class);
+    }
+
+
+    @Override
     public CityDto save(CityDto cityDto) {
 
         if (cityDto.equals(new CityDto()) || cityDto == null) {
@@ -92,7 +103,7 @@ public class CityServiceImpl implements CityService {
         cityRepository.delete(id);
     }
 
-    @Override
+/*    @Override
     public CityDto findByName(String name) {
 
         CityDto cityDto = Optional.ofNullable(cityRepository.findByName(name))
@@ -106,5 +117,5 @@ public class CityServiceImpl implements CityService {
         }
 
         return cityDto;
-    }
+    }*/
 }

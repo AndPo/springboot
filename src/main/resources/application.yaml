@@ -7,9 +7,9 @@ spring:
       ddl-auto: validate
 
   datasource:
-    url: jdbc:mysql://localhost:3306/lessons?serverTimezone=UTC
-    username: root
-    password: root
+    url: jdbc:mysql://localhost:3306/lits?serverTimezone=UTC
+    username: serhii
+    password: F,hfrflf,hf314
 
   data:
     mongodb:
